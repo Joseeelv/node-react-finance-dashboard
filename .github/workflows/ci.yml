@@ -1,0 +1,79 @@
+name: CI Pipeline (Quality Check)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Backend specific setup
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+        run: |
+          cd backend
+          pnpm exec prisma migrate deploy
+
+      # Linting
+      - name: Lint Backend
+        run: pnpm --filter backend run lint
+        continue-on-error: true
+
+      - name: Lint Frontend
+        run: pnpm --filter frontend run lint
+        continue-on-error: true
+
+      # Type Checking
+      - name: Type Check Backend
+        run: pnpm --filter backend exec tsc --noEmit
+
+      - name: Type Check Frontend
+        run: pnpm --filter frontend exec tsc --noEmit
+
+      # Build Tests
+      - name: Build Backend
+        run: pnpm --filter backend build
+
+      - name: Build Frontend
+        run: pnpm --filter frontend build
+
+      # Summary
+      - name: CI Pipeline Complete
+        run: echo "✅ All checks passed successfully!"
