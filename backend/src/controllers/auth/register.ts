@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import bcryptjs from 'bcryptjs';
 import prisma from '../../lib/prisma';
 
 // Register Controller
@@ -26,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({ message: 'User registered successfully', userId: user.id });
+    res.status(201).json({ message: 'User registered successfully'});
   } catch (error) {
     console.error('Error en registro:', error);
     res.status(500).json({ message: 'Internal server error', error: error instanceof Error ? error.message : 'Unknown error' });
