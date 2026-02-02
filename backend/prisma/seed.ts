@@ -1,18 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import pg from 'pg';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-// Crear el pool de conexiones de PostgreSQL
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-
-// Crear el adapter
-const adapter = new PrismaPg(pool);
-
-// Inicializar PrismaClient con el adapter
-const prisma = new PrismaClient({ adapter });
+import prisma from '../src/lib/prisma';
 
 async function main() {
   console.log('Empezando el seeding...');
