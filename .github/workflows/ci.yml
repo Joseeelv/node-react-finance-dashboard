@@ -9,7 +9,7 @@ on:
 jobs:
   quality-check:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:13
@@ -17,11 +17,6 @@ jobs:
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: testpass
           POSTGRES_DB: testdb
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
         ports:
           - 5432:5432
 
@@ -43,13 +38,36 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Cache Prisma
+      - name: Cache Prisma
+        uses: actions/cache@v3
+        with:
+          path: |
+            backend/node_modules/.prisma
+          key: ${{ runner.os }}-prisma-${{ hashFiles('backend/prisma/schema.prisma') }}
+
       # Backend specific setup
-      - name: Setup test database
+      - name: Generate Prisma Client
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+        run: |
+          cd backend
+          pnpm exec prisma generate
+
+      - name: Run database migrations
         env:
           DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
         run: |
           cd backend
           pnpm exec prisma migrate deploy
+
+      - name: Seed database (optional)
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+        run: |
+          cd backend
+          pnpm exec prisma db seed
+        continue-on-error: true
 
       # Linting
       - name: Lint Backend
@@ -67,8 +85,21 @@ jobs:
       - name: Type Check Frontend
         run: pnpm --filter frontend exec tsc --noEmit
 
+      # Unit Tests (si los tienes configurados)
+      - name: Run Backend Tests
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+        run: pnpm --filter backend test
+        continue-on-error: true
+
+      - name: Run Frontend Tests
+        run: pnpm --filter frontend test
+        continue-on-error: true
+
       # Build Tests
       - name: Build Backend
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
         run: pnpm --filter backend build
 
       - name: Build Frontend
