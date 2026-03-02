@@ -18,14 +18,17 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "prisma": "^7.3.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@prisma/adapter-pg": "^7.3.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.2.0",
     "@types/pg": "^8.18.0",
     "pg": "^8.18.0",
