@@ -36,5 +36,12 @@
   },
   "prisma": {
     "seed": "ts-node --esm prisma/seed.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "esbuild",
+      "prisma"
+    ]
   }
 }
