@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/login/page";
+import LoginPage from "./login/page";
+import RegisterPage from "./register/page";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
         {/* Redirige la raíz a /login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );
