@@ -35,7 +35,7 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
@@ -47,6 +47,7 @@ jobs:
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/finance_test" > .env
           echo "PORT=3000" >> .env
           echo "NODE_ENV=test" >> .env
+          echo "JWT_SECRET=ci-test-secret" >> .env
 
       - name: Run Prisma migrations
         run: pnpm prisma migrate deploy
@@ -54,8 +55,8 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
 
-      - name: Build application
-        run: pnpm build
+      - name: Type check
+        run: pnpm exec tsc --noEmit
 
   frontend:
     name: Frontend CI
@@ -75,7 +76,7 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
@@ -95,5 +96,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend-build
-          path: frontend/dist
+          path: ./frontend/dist
           retention-days: 7
