@@ -51,7 +51,7 @@ export const validateParams = <T extends z.ZodTypeAny>(schema: T) => {
       });
     }
 
-    req.params = result.data;
+    req.params = result.data as Record<string, string>;
     next();
   };
 };

@@ -26,8 +26,8 @@ model Transaction {
   typeId      Int
   type        TransactionCategory @relation(fields: [typeId], references: [id])
 
-  categoryId Int?
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [documentId], onDelete: Cascade)

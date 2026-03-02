@@ -1,30 +1,31 @@
 import { z } from 'zod';
 
 // ─── Create ──────────────────────────────────────────────────────────────────
-// z.coerce convierte strings → número/fecha automáticamente,
-// lo que es común cuando los datos vienen de formularios HTML o JSON loosely typed.
+// En Zod v4 el parámetro de mensajes pasó de `invalid_type_error`/`required_error`
+// a un único `error` (string o ZodErrorMap).
+// z.coerce convierte strings → número/fecha automáticamente.
 export const CreateTransactionSchema = z.object({
   amount: z.coerce
-    .number({ invalid_type_error: 'amount debe ser un número' })
+    .number({ error: 'amount debe ser un número' })
     .positive({ message: 'amount debe ser mayor a 0' }),
 
   date: z.coerce
-    .date({ invalid_type_error: 'Fecha inválida' })
+    .date({ error: 'Fecha inválida' })
     .optional(),
 
   description: z.string().optional(),
 
   typeId: z.coerce
-    .number({ invalid_type_error: 'typeId debe ser un número' })
+    .number({ error: 'typeId debe ser un número' })
     .int({ message: 'typeId debe ser un entero' }),
 
   categoryId: z.coerce
-    .number({ invalid_type_error: 'categoryId debe ser un número' })
+    .number({ error: 'categoryId debe ser un número' })
     .int({ message: 'categoryId debe ser un entero' })
     .optional(),
 
   documentId: z
-    .string({ required_error: 'documentId es obligatorio' })
+    .string()
     .min(1, { message: 'documentId no puede estar vacío' }),
 });
 
@@ -36,23 +37,23 @@ export type CreateTransactionDTO = z.infer<typeof CreateTransactionSchema>;
 export const UpdateTransactionSchema = z
   .object({
     amount: z.coerce
-      .number({ invalid_type_error: 'amount debe ser un número' })
+      .number({ error: 'amount debe ser un número' })
       .positive({ message: 'amount debe ser mayor a 0' })
       .optional(),
 
     date: z.coerce
-      .date({ invalid_type_error: 'Fecha inválida' })
+      .date({ error: 'Fecha inválida' })
       .optional(),
 
     description: z.string().optional(),
 
     typeId: z.coerce
-      .number({ invalid_type_error: 'typeId debe ser un número' })
+      .number({ error: 'typeId debe ser un número' })
       .int()
       .optional(),
 
     categoryId: z.coerce
-      .number({ invalid_type_error: 'categoryId debe ser un número' })
+      .number({ error: 'categoryId debe ser un número' })
       .int()
       .optional(),
   })
@@ -66,7 +67,7 @@ export type UpdateTransactionDTO = z.infer<typeof UpdateTransactionSchema>;
 // ─── Get ─────────────────────────────────────────────────────────────────────
 export const GetTransactionsSchema = z.object({
   documentId: z
-    .string({ required_error: 'documentId es obligatorio' })
+    .string()
     .min(1, { message: 'documentId no puede estar vacío' }),
 });
 
@@ -75,7 +76,7 @@ export type GetTransactionsDTO = z.infer<typeof GetTransactionsSchema>;
 // ─── Delete ──────────────────────────────────────────────────────────────────
 export const DeleteTransactionSchema = z.object({
   uuid: z
-    .string({ required_error: 'uuid es obligatorio' })
+    .string()
     .uuid({ message: 'uuid debe tener formato UUID válido' }),
 });
 

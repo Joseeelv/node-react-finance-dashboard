@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import type { CreateTransactionDTO, UpdateTransactionDTO, GetTransactionsDTO, DeleteTransactionDTO } from '../dtos/transaction.dto.js';
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma.js';
 
 // Get Transactions Controller
@@ -68,12 +69,13 @@ export const createTransaction = async (req: Request<{}, {}, CreateTransactionDT
     const newTransaction = await prisma.transaction.create({
       data: {
         amount,
-        ...(date ? { date } : {}),
-        description,
+        // description es String? en Prisma → acepta string | null, no undefined
+        description: description ?? null,
         typeId,
         userId: documentId,
-        ...(categoryId !== undefined ? { categoryId } : {}),
-      },
+        // categoryId es Int? en Prisma → acepta number | null, no undefined
+        categoryId: categoryId ?? null,
+      } satisfies Prisma.TransactionUncheckedCreateInput,
       select: {
         uuid: true,
         amount: true,
@@ -133,7 +135,9 @@ export const updateTransaction = async (req: Request<{ uuid: string }, {}, Updat
 
     const updatedTransaction = await prisma.transaction.update({
       where: { uuid },
-      data: dataToUpdate,
+      // Cast a TransactionUncheckedUpdateInput porque usamos IDs escalares (typeId, categoryId)
+      // en vez de sintaxis de relación ({ type: { connect: { id } } })
+      data: dataToUpdate as Prisma.TransactionUncheckedUpdateInput,
       select: {
         uuid: true,
         amount: true,
