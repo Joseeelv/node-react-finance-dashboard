@@ -23,6 +23,7 @@ export const register = async (req: Request, res: Response) => {
       data: {
         name,
         email,
+        documentId: crypto.randomUUID(),
         password: hashedPassword,
       },
     });
