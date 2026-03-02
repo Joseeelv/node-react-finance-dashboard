@@ -1,4 +1,4 @@
-import prisma from '../src/lib/prisma';
+import prisma from '../src/lib/prisma.js';
 
 async function main() {
   console.log('Empezando el seeding...');
@@ -63,5 +63,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end();
   });

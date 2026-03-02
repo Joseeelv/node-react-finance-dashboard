@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth';
-import prisma from './lib/prisma';
+import authRoutes from './routes/auth.js';
+import prisma from './lib/prisma.js';
 
 dotenv.config();
 
