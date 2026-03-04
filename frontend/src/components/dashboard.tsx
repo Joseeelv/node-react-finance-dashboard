@@ -145,7 +145,7 @@ export default function Dashboard() {
           <span className="text-sm opacity-90">Hola, {user?.name}</span>
           <button
             onClick={handleLogout}
-            className="text-sm bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded transition-colors"
+            className="text-sm bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded transition-colors cursor-pointer"
           >
             Cerrar sesión
           </button>
@@ -194,7 +194,7 @@ export default function Dashboard() {
             </h2>
             <button
               onClick={() => setShowForm((v) => !v)}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition-colors cursor-pointer"
             >
               {showForm ? "Cancelar" : "+ Nueva transacción"}
             </button>
@@ -288,7 +288,7 @@ export default function Dashboard() {
               <button
                 type="submit"
                 disabled={formLoading}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors disabled:opacity-60"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors disabled:opacity-60 cursor-pointer"
               >
                 {formLoading ? "Guardando..." : "Guardar"}
               </button>
