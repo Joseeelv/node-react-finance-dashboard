@@ -5,10 +5,9 @@ import {
   createTransactionRequest,
   deleteTransactionRequest,
   getCategoriesRequest,
-  getTransactionTypesRequest,
   type Transaction,
   type Category,
-  type TransactionType,
+  // type TransactionType,
 } from "../lib/api";
 
 interface StoredUser {
@@ -23,7 +22,7 @@ export default function Dashboard() {
   const [user, setUser] = useState<StoredUser | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [types, setTypes] = useState<TransactionType[]>([]);
+  // const [types, setTypes] = useState<TransactionType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,15 +48,14 @@ export default function Dashboard() {
 
     const fetchData = async () => {
       try {
-        const [txs, cats, txTypes] = await Promise.all([
+        const [txs, cats] = await Promise.all([
           getTransactionsRequest(parsedUser.documentId),
           getCategoriesRequest(),
-          getTransactionTypesRequest(),
         ]);
         setTransactions(txs);
         setCategories(cats);
-        setTypes(txTypes);
-        if (txTypes.length > 0) setFormTypeId(String(txTypes[0].id));
+        // setTypes(txTypes);
+        // if (txTypes.length > 0) setFormTypeId(String(txTypes[0].id));
         if (cats.length > 0) setFormCategoryId(String(cats[0].id));
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error al cargar datos");
@@ -250,11 +248,11 @@ export default function Dashboard() {
                     className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                     required
                   >
-                    {types.map((t) => (
+                    {/* {types.map((t) => (
                       <option key={t.id} value={t.id}>
                         {t.name === "INCOME" ? "Ingreso" : "Gasto"}
                       </option>
-                    ))}
+                    ))} */}
                   </select>
                 </div>
                 <div>

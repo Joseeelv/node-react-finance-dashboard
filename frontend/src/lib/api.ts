@@ -1,5 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export interface AuthUser {
   documentId: string;
@@ -120,12 +119,5 @@ export async function getCategoriesRequest(): Promise<Category[]> {
   const res = await fetch(`${API_URL}/categories`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Error al obtener categorías');
-  return data;
-}
-
-export async function getTransactionTypesRequest(): Promise<TransactionType[]> {
-  const res = await fetch(`${API_URL}/categories/types`);
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Error al obtener tipos');
   return data;
 }
