@@ -51,7 +51,7 @@ export default function Dashboard() {
       try {
         const [txs, cats, txTypes] = await Promise.all([
           getTransactionsRequest(parsedUser.documentId),
-          getCategoriesRequest(parsedUser.documentId),
+          getCategoriesRequest(),
           getTransactionTypesRequest(),
         ]);
         setTransactions(txs);
