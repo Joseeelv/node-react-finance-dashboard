@@ -6,7 +6,7 @@ export const getAllTypes = async (req: Request, res: Response) => {
     const types = await prisma.transactionCategory.findMany({
       orderBy: { name: 'asc' },
       select:{
-        id: true,
+        uuid: true,
         name: true,
         icon: true,
       }

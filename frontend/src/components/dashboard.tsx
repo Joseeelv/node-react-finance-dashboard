@@ -57,8 +57,8 @@ export default function Dashboard() {
         setTransactions(txs);
         setCategories(cats);
         setTypes(txTypes);
-        if (txTypes.length > 0) setFormTypeId(String(txTypes[0].id));
-        if (cats.length > 0) setFormCategoryId(String(cats[0].id));
+        if (txTypes.length > 0) setFormTypeId(txTypes[0].uuid);
+        if (cats.length > 0) setFormCategoryId(cats[0].uuid);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error al cargar datos");
       } finally {
@@ -84,8 +84,8 @@ export default function Dashboard() {
       const newTx = await createTransactionRequest({
         amount: parseFloat(formAmount),
         description: formDescription || undefined,
-        typeId: parseInt(formTypeId),
-        categoryId: formCategoryId ? parseInt(formCategoryId) : undefined,
+        typeId: formTypeId,
+        categoryId: formCategoryId || undefined,
         date: formDate || undefined,
         documentId: user.documentId,
       });
@@ -251,7 +251,7 @@ export default function Dashboard() {
                     required
                   >
                     {types.map((t) => (
-                      <option key={t.id} value={t.id}>
+                      <option key={t.uuid} value={t.uuid}>
                         {t.name === "INCOME" ? "Ingreso" : "Gasto"}
                       </option>
                     ))}
@@ -267,7 +267,7 @@ export default function Dashboard() {
                     className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                   >
                     {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
+                      <option key={c.uuid} value={c.uuid}>
                         {c.name}
                       </option>
                     ))}

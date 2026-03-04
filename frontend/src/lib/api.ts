@@ -65,8 +65,8 @@ export async function getTransactionsRequest(documentId: string): Promise<Transa
 export interface CreateTransactionData {
   amount: number;
   description?: string;
-  typeId: number;
-  categoryId?: number;
+  typeId: string;
+  categoryId?: string;
   date?: string;
   documentId: string;
 }
@@ -103,14 +103,14 @@ export async function deleteTransactionRequest(uuid: string, documentId: string)
 }
 
 export interface Category {
-  id: number;
+  uuid: string;
   name: string;
   color: string;
   icon: string | null;
 }
 
 export interface TransactionType {
-  id: number;
+  uuid: string;
   name: string;
   icon: string | null;
 }
