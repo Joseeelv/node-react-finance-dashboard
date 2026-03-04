@@ -1,14 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-}
-
 datasource db {
   provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  documentId   String        @unique @default(uuid())
+  //Relations
+  transactions Transaction[]
+}
+
+model Transaction {
+  uuid        String              @id @default(uuid())
+  amount      Float
+  date        DateTime            @default(now())
+  description String?
+  //Relations
+  typeId      String
+  type        TransactionCategory @relation(fields: [typeId], references: [uuid])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [uuid], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [documentId], onDelete: Cascade)
+}
+
+model TransactionCategory {
+  uuid         String        @id @default(uuid())
+  name         String
+  icon         String?
+  transactions Transaction[]
+}
+
+model Category {
+  uuid         String        @id @default(uuid())
+  name         String
+  color        String
+  icon         String?
+  // Relations
+  transactions Transaction[]
 }
