@@ -15,13 +15,13 @@ export const CreateTransactionSchema = z.object({
 
   description: z.string().optional(),
 
-  typeId: z.coerce
-    .number({ error: 'typeId debe ser un número' })
-    .int({ message: 'typeId debe ser un entero' }),
+  typeId: z
+    .string()
+    .uuid({ message: 'typeId debe ser un UUID válido' }),
 
-  categoryId: z.coerce
-    .number({ error: 'categoryId debe ser un número' })
-    .int({ message: 'categoryId debe ser un entero' })
+  categoryId: z
+    .string()
+    .uuid({ message: 'categoryId debe ser un UUID válido' })
     .optional(),
 
   documentId: z
@@ -47,14 +47,14 @@ export const UpdateTransactionSchema = z
 
     description: z.string().optional(),
 
-    typeId: z.coerce
-      .number({ error: 'typeId debe ser un número' })
-      .int()
+    typeId: z
+      .string()
+      .uuid({ message: 'typeId debe ser un UUID válido' })
       .optional(),
 
-    categoryId: z.coerce
-      .number({ error: 'categoryId debe ser un número' })
-      .int()
+    categoryId: z
+      .string()
+      .uuid({ message: 'categoryId debe ser un UUID válido' })
       .optional(),
   })
   // .refine valida lógica de negocio que no encaja en un solo campo

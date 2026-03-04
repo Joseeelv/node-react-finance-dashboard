@@ -75,7 +75,7 @@ export const createTransaction = async (req: Request<{}, {}, CreateTransactionDT
         userId: documentId,
         ...(categoryId != null ? { categoryId } : {}),
         ...(date ? { date } : {}),
-      } as Prisma.TransactionUncheckedCreateInput,
+      } as unknown as Prisma.TransactionUncheckedCreateInput,
       select: {
         uuid: true,
         amount: true,

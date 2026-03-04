@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import transactionsRoutes from './routes/transactions.js';
 import CategoriesRoutes from './routes/categories.js';
+import TypesRoutes from './routes/types.js';
 import prisma from './lib/prisma.js';
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/categories', CategoriesRoutes);
+app.use('/api/types', TypesRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });

@@ -13,7 +13,6 @@ model User {
   password     String
   documentId   String        @unique @default(uuid())
   //Relations
-  categories   Category[]
   transactions Transaction[]
 }
 
@@ -23,30 +22,28 @@ model Transaction {
   date        DateTime            @default(now())
   description String?
   //Relations
-  typeId      Int
-  type        TransactionCategory @relation(fields: [typeId], references: [id])
+  typeId      String
+  type        TransactionCategory @relation(fields: [typeId], references: [uuid])
 
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [uuid], onDelete: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [documentId], onDelete: Cascade)
 }
 
 model TransactionCategory {
-  id           Int           @id @default(autoincrement())
+  uuid         String        @id @default(uuid())
   name         String
   icon         String?
   transactions Transaction[]
 }
 
 model Category {
-  id           Int           @id @default(autoincrement())
+  uuid         String        @id @default(uuid())
   name         String
   color        String
   icon         String?
   // Relations
-  user         User?         @relation(fields: [userId], references: [documentId])
-  userId       String?
   transactions Transaction[]
 }

@@ -65,8 +65,8 @@ export async function getTransactionsRequest(documentId: string): Promise<Transa
 export interface CreateTransactionData {
   amount: number;
   description?: string;
-  typeId: number;
-  categoryId?: number;
+  typeId: string;
+  categoryId?: string;
   date?: string;
   documentId: string;
 }
@@ -103,14 +103,14 @@ export async function deleteTransactionRequest(uuid: string, documentId: string)
 }
 
 export interface Category {
-  id: number;
+  uuid: string;
   name: string;
   color: string;
   icon: string | null;
 }
 
 export interface TransactionType {
-  id: number;
+  uuid: string;
   name: string;
   icon: string | null;
 }
@@ -119,5 +119,12 @@ export async function getCategoriesRequest(): Promise<Category[]> {
   const res = await fetch(`${API_URL}/categories`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Error al obtener categorías');
+  return data;
+}
+
+export async function getTypesRequest(): Promise<TransactionType[]> {
+  const res = await fetch(`${API_URL}/types`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Error al obtener tipos');
   return data;
 }
