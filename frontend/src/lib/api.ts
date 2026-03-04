@@ -116,8 +116,8 @@ export interface TransactionType {
   icon: string | null;
 }
 
-export async function getCategoriesRequest(documentId: string): Promise<Category[]> {
-  const res = await fetch(`${API_URL}/categories?documentId=${encodeURIComponent(documentId)}`);
+export async function getCategoriesRequest(): Promise<Category[]> {
+  const res = await fetch(`${API_URL}/categories`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Error al obtener categorías');
   return data;
