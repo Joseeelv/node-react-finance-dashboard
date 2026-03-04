@@ -121,3 +121,10 @@ export async function getCategoriesRequest(): Promise<Category[]> {
   if (!res.ok) throw new Error(data.message || 'Error al obtener categorías');
   return data;
 }
+
+export async function getTypesRequest(): Promise<TransactionType[]> {
+  const res = await fetch(`${API_URL}/types`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Error al obtener tipos');
+  return data;
+}

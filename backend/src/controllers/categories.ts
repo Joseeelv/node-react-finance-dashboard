@@ -7,6 +7,7 @@ export const getCategoriesForUser = async (req: Request, res: Response) => {
     let categories = await prisma.category.findMany({
       orderBy: { name: 'asc' },
       select: {
+        id: true,
         name: true,
         color: true,
         icon: true,
