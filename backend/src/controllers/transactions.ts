@@ -4,9 +4,9 @@ import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma.js';
 
 // Get Transactions Controller
-export const getTransactions = async (req: Request<{}, {}, GetTransactionsDTO>, res: Response) => {
+export const getTransactions = async (req: Request, res: Response) => {
   try {
-    const { documentId } = req.body;
+    const { documentId } = req.query as GetTransactionsDTO;
 
     console.log('Fetching transactions for documentId:', documentId);
 

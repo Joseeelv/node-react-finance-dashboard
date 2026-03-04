@@ -32,6 +32,32 @@ export const validateBody = <T extends z.ZodTypeAny>(schema: T) => {
 };
 
 /**
+ * Middleware factory que valida req.query con un schema Zod.
+ *
+ * Uso en rutas:
+ *   router.get('/', validateQuery(GetTransactionsSchema), getTransactions)
+ */
+export const validateQuery = <T extends z.ZodTypeAny>(schema: T) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req.query);
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: 'Validación fallida',
+        errors: result.error.issues.map((issue) => ({
+          field: issue.path.join('.') || 'query',
+          message: issue.message,
+        })),
+      });
+    }
+
+    // Attach parsed query to req so controllers can use it typed
+    (req as Request & { parsedQuery: z.infer<T> }).parsedQuery = result.data;
+    next();
+  };
+};
+
+/**
  * Middleware factory que valida req.params con un schema Zod.
  *
  * Uso en rutas:
