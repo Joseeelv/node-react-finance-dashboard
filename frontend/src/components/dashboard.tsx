@@ -5,9 +5,10 @@ import {
   createTransactionRequest,
   deleteTransactionRequest,
   getCategoriesRequest,
+  getTypesRequest,
   type Transaction,
   type Category,
-  getTypesRequest,
+  type TransactionType,
 } from "../lib/api";
 
 interface StoredUser {
